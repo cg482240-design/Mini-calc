@@ -32,6 +32,14 @@ try:
     # Analisis sintactico
     analizador_sintactico = Parser(tokens)
     analizador_sintactico.analizar()
+    
+    print("\n=== ARBOLES DE DERIVACION ===")
+
+    for i, arbol in enumerate(
+        analizador_sintactico.arboles, 1
+    ):
+        print(f"\nArbol de derivacion {i}:")
+        arbol.mostrar()
 
 except (ErrorLexico, ErrorSintactico) as error:
     print(error)

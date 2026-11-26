@@ -1,4 +1,4 @@
-
+from arbol import Nodo
 from errores import ErrorSintactico
 
 
@@ -6,6 +6,7 @@ class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.posicion = 0
+        self.arboles = []
 
     def token_actual(self):
         return self.tokens[self.posicion]
@@ -44,16 +45,23 @@ class Parser:
         if tipo == "ID":
             self.consumir("ID")
             self.consumir("OP_ASSIGN")
-            self.expresion()
+
+            arbol = self.expresion()
+
             self.consumir("PUNCT_SEMI")
+            self.arboles.append(arbol)
 
         elif tipo == "KW_PRINT":
             self.consumir("KW_PRINT")
-            self.expresion()
+
+            arbol = self.expresion()
+
             self.consumir("PUNCT_SEMI")
+            self.arboles.append(arbol)
 
         else:
             token = self.token_actual()
+
             raise ErrorSintactico(
                 "sentencia no válida",
                 token[2],
@@ -62,35 +70,47 @@ class Parser:
 
     # expresion -> termino expresion_prima
     def expresion(self):
-        self.termino()
-        self.expresion_prima()
+        return Nodo("E", [
+            self.termino(),
+            self.expresion_prima()
+        ])
 
-    # expresion_prima -> + termino expresion_prima
-    #                  | - termino expresion_prima
-    #                  | epsilon
+    # expresion_prima -> + T E' | - T E' | epsilon
     def expresion_prima(self):
         tipo = self.token_actual()[0]
 
         if tipo in ("OP_ADD", "OP_SUB"):
-            self.posicion += 1
-            self.termino()
-            self.expresion_prima()
+            operador = self.consumir(tipo)[1]
+
+            return Nodo("E'", [
+                Nodo(operador),
+                self.termino(),
+                self.expresion_prima()
+            ])
+
+        return Nodo("E'", [Nodo("ε")])
 
     # termino -> factor termino_prima
     def termino(self):
-        self.factor()
-        self.termino_prima()
+        return Nodo("T", [
+            self.factor(),
+            self.termino_prima()
+        ])
 
-    # termino_prima -> * factor termino_prima
-    #                | / factor termino_prima
-    #                | epsilon
+    # termino_prima -> * F T' | / F T' | epsilon
     def termino_prima(self):
         tipo = self.token_actual()[0]
 
         if tipo in ("OP_MUL", "OP_DIV"):
-            self.posicion += 1
-            self.factor()
-            self.termino_prima()
+            operador = self.consumir(tipo)[1]
+
+            return Nodo("T'", [
+                Nodo(operador),
+                self.factor(),
+                self.termino_prima()
+            ])
+
+        return Nodo("T'", [Nodo("ε")])
 
     # factor -> ( expresion ) | ID | NUM
     def factor(self):
@@ -98,23 +118,31 @@ class Parser:
 
         if tipo == "PUNCT_LPAREN":
             self.consumir("PUNCT_LPAREN")
-            self.expresion()
+            expresion = self.expresion()
             self.consumir("PUNCT_RPAREN")
 
+            return Nodo("F", [
+                Nodo("("),
+                expresion,
+                Nodo(")")
+            ])
+
         elif tipo == "ID":
-            self.consumir("ID")
+            token = self.consumir("ID")
+            return Nodo("F", [Nodo(token[1])])
 
         elif tipo == "NUM":
-            self.consumir("NUM")
+            token = self.consumir("NUM")
+            return Nodo("F", [Nodo(token[1])])
 
         else:
             token = self.token_actual()
+
             raise ErrorSintactico(
                 "expresión no válida",
                 token[2],
                 token[3]
             )
-
     def analizar(self):
         self.programa()
         print("El análisis sintáctico finalizó exitosamente sin errores.")
