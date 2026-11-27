@@ -1,4 +1,5 @@
 1. Gramática original
+
 La gramática original del lenguaje es asi:
 
 lista_sentencias → sentencia lista_sentencias
