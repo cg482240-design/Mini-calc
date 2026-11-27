@@ -12,3 +12,4 @@ class Nodo:
 
         for i, hijo in enumerate(self.hijos):
             hijo.mostrar(prefijo, i == len(self.hijos) - 1)
+ 

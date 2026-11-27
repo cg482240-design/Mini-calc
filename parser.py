@@ -10,7 +10,7 @@ class Parser:
 
     def token_actual(self):
         return self.tokens[self.posicion]
-
+ 
     def consumir(self, tipo):
         token = self.token_actual()
 
