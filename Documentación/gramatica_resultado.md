@@ -45,6 +45,7 @@ A  → β A'
 A' → α A' | ε
 ```
 Aplicando esta transformación a la gramática:
+
 Para expresión:
 
 Gramática original:
