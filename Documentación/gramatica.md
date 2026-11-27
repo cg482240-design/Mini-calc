@@ -2,45 +2,59 @@
 
 La gramática original del lenguaje es asi:
 
+
 lista_sentencias → sentencia lista_sentencias
            | ε
+
 
 sentencia → ID = expresión ;
            | print expresión ;
 
+
 expresión → término expresión'
+
 
 expresión' → + término expresión'
            | - término expresión'
            | ε
 
+
 término → factor término'
+
 
 término' → * factor término'
          | / factor término'
          | ε
 
+
 factor → ( expresión )
        | ID
        | NUM
 
+
 2. Eliminación de la recursividad izquierda
-Para adaptar la gramática eliminamis la recursividad izquierda.
+
+Para adaptar la gramática eliminamos la recursividad izquierda.
 
 La transformación general:
+
 A → A α | β
 
 Que se transformó en:
+
 A  → β A'
 A' → α A' | ε
+
 
 Aplicando esta transformación a la gramática:
 Para expresión:
 
 Gramática original:
+
 expresión → expresión + término
            | expresión - término
            | término
+
 
 Gramática sin recursividad izquierda:
 expresión  → término expresión'
@@ -48,12 +62,15 @@ expresión' → + término expresión'
              | - término expresión'
              | ε
 
+
 Para término:
 
 Gramática original:
+
 término → término * factor
          | término / factor
          | factor
+
 
 Gramática sin recursividad izquierda:
 término  → factor término'
@@ -61,19 +78,26 @@ término' → * factor término'
            | / factor término'
            | ε
 
+
 La producción de factor no necesita modificaciones porque no presenta recursividad izquierda.
 
 3. Gramática adaptada al descenso recursivo
+
 Al eliminar la recursividad izquierda, la gramática completa quedó asi:
+
 programa → lista_sentencias
+
 
 lista_sentencias → sentencia lista_sentencias
                   | ε
 
+
 sentencia → ID = expresión ;
            | print expresión ;
 
+
 expresión → término expresión'
+
 
 expresión' → + término expresión'
            | - término expresión'
