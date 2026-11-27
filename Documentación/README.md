@@ -222,6 +222,7 @@ La carpeta `Documentación/` contiene los materiales complementarios del trabajo
 
 ## Video demostrativo
 
-Archivo: `Documentación/video-demostrativo.mp4`
+archivo prueba de error: `https://drive.google.com/drive/folders/1sjUhXysC59yytjj9YxZa6-KIx9Cr-2QE?usp=sharing`
+
 
 El video muestra la ejecución del programa, el reconocimiento de tokens y la detección de errores léxicos y sintácticos.
