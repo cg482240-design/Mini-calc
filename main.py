@@ -29,7 +29,7 @@ try:
 
     print("\n=== INICIO DE ANALISIS SINTACTICO ===")
 
-    # Analisis sintactico
+    # Analisis sintactico 
     analizador_sintactico = Parser(tokens)
     analizador_sintactico.analizar()
     
