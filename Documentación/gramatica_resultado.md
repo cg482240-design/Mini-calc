@@ -100,6 +100,6 @@ expresión' → + término expresión'
 término → factor término'
 
 término' → * factor término'
-```
          | / factor término'
          | ε
+```
