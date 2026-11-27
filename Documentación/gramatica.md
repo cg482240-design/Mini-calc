@@ -1,23 +1,27 @@
 1. Gramática original
 La gramática original del lenguaje es asi:
-programa → lista_sentencias
 
-lista_sentencias → sentencia lista_sentencias | ε
+lista_sentencias → sentencia lista_sentencias
+           | ε
 
 sentencia → ID = expresión ;
            | print expresión ;
 
-expresión → expresión + término
-           | expresión - término
-           | término
+expresión → término expresión'
 
-término → término * factor
-         | término / factor
-         | factor
+expresión' → + término expresión'
+           | - término expresión'
+           | ε
+
+término → factor término'
+
+término' → * factor término'
+         | / factor término'
+         | ε
 
 factor → ( expresión )
-        | ID
-        | NUM
+       | ID
+       | NUM
 
 2. Eliminación de la recursividad izquierda
 Para adaptar la gramática eliminamis la recursividad izquierda.
